@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include "Print.h"
+#include "MCP23008.h"
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -55,6 +56,9 @@ public:
   LiquidCrystal(uint8_t rs, uint8_t enable,
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
 
+  LiquidCrystal(uint8_t i2cAddr);
+  LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch);
+
   void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 	    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 	    uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
@@ -86,6 +90,8 @@ private:
   void write4bits(uint8_t);
   void write8bits(uint8_t);
   void pulseEnable();
+  void _digitalWrite(uint8_t, uint8_t);
+  void _pinMode(uint8_t, uint8_t);
 
   uint8_t _rs_pin; // LOW: command.  HIGH: character.
   uint8_t _rw_pin; // LOW: write to LCD.  HIGH: read from LCD.
@@ -99,6 +105,12 @@ private:
   uint8_t _initialized;
 
   uint8_t _numlines,_currline;
+
+  uint8_t _SPIclock, _SPIdata, _SPIlatch;
+  uint8_t _SPIbuff;
+
+  uint8_t _i2cAddr;
+  MCP23008 _i2c;
 };
 
 #endif

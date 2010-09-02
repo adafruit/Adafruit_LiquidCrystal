@@ -50,6 +50,52 @@ LiquidCrystal::LiquidCrystal(uint8_t rs,  uint8_t enable,
   init(1, rs, 255, enable, d0, d1, d2, d3, 0, 0, 0, 0);
 }
 
+LiquidCrystal::LiquidCrystal(uint8_t i2caddr) {
+  _i2cAddr = i2caddr;
+
+  _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+  
+  // the I/O expander pinout
+  _rs_pin = 7;
+  _rw_pin = 255;
+  _enable_pin = 6;
+  _data_pins[0] = 5;  // really d4
+  _data_pins[1] = 4;  // really d5
+  _data_pins[2] = 3;  // really d6
+  _data_pins[3] = 2;  // really d7
+  
+  // we can't begin() yet :(
+}
+
+
+LiquidCrystal::LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch ) {
+  _i2cAddr = 255;
+
+  _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+  
+  // the SPI expander pinout
+  _rs_pin = 2;
+  _rw_pin = 255;
+  _enable_pin = 1;
+  _data_pins[0] = 3;  // really d4
+  _data_pins[1] = 4;  // really d5
+  _data_pins[2] = 5;  // really d6
+  _data_pins[3] = 6;  // really d7
+  
+  _SPIdata = data;
+  _SPIclock = clock;
+  _SPIlatch = latch;
+
+  pinMode(_SPIdata, OUTPUT);
+  pinMode(_SPIclock, OUTPUT);
+  pinMode(_SPIlatch, OUTPUT);
+  _SPIbuff = 0;
+
+  // we can't begin() yet :(
+  begin(16,1);
+}
+
+
 void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 			 uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 			 uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7)
@@ -67,6 +113,9 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
   _data_pins[6] = d6;
   _data_pins[7] = d7; 
 
+  _i2cAddr = 255;
+  _SPIclock = _SPIdata = _SPIlatch = 255;
+
   pinMode(_rs_pin, OUTPUT);
   // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
   if (_rw_pin != 255) { 
@@ -83,6 +132,20 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
 }
 
 void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
+  // check if i2c
+  if (_i2cAddr != 255) {
+    _i2c.begin();
+
+    _i2c.pinMode(1, OUTPUT); // backlight
+    _i2c.digitalWrite(1, HIGH); // backlight
+
+    
+    _i2c.pinMode(_rs_pin, OUTPUT);
+    _i2c.pinMode(_enable_pin, OUTPUT);
+  }
+
+
+
   if (lines > 1) {
     _displayfunction |= LCD_2LINE;
   }
@@ -99,10 +162,10 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   // before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
   delayMicroseconds(50000); 
   // Now we pull both RS and R/W low to begin commands
-  digitalWrite(_rs_pin, LOW);
-  digitalWrite(_enable_pin, LOW);
+  _digitalWrite(_rs_pin, LOW);
+  _digitalWrite(_enable_pin, LOW);
   if (_rw_pin != 255) { 
-    digitalWrite(_rw_pin, LOW);
+    _digitalWrite(_rw_pin, LOW);
   }
   
   //put the LCD into 4 bit or 8 bit mode
@@ -264,13 +327,49 @@ inline void LiquidCrystal::write(uint8_t value) {
 
 /************ low level data pushing commands **********/
 
+// little wrapper for i/o writes
+void  LiquidCrystal::_digitalWrite(uint8_t p, uint8_t d) {
+  if (_i2cAddr != 255) {
+    // an i2c command
+    _i2c.digitalWrite(p, d);
+  } else if (_SPIclock != 255) {
+    if (d == HIGH)
+      _SPIbuff |= (1 << p);
+    else 
+      _SPIbuff &= ~(1 << p);
+
+    _SPIbuff |= 0x80; // backlight
+
+    digitalWrite(_SPIlatch, LOW);
+    shiftOut(_SPIdata, _SPIclock, MSBFIRST,_SPIbuff);
+    digitalWrite(_SPIlatch, HIGH);
+  } else {
+    // straightup IO
+    digitalWrite(p, d);
+  }
+}
+
+
+// little wrapper for i/o directions
+void  LiquidCrystal::_pinMode(uint8_t p, uint8_t d) {
+  if (_i2cAddr != 255) {
+    // an i2c command
+    _i2c.pinMode(p, d);
+  } else if (_SPIclock != 255) {
+    // nothing!
+  } else {
+    // straightup IO
+    pinMode(p, d);
+  }
+}
+
 // write either command or data, with automatic 4/8-bit selection
 void LiquidCrystal::send(uint8_t value, uint8_t mode) {
-  digitalWrite(_rs_pin, mode);
+  _digitalWrite(_rs_pin, mode);
 
   // if there is a RW pin indicated, set it low to Write
   if (_rw_pin != 255) { 
-    digitalWrite(_rw_pin, LOW);
+    _digitalWrite(_rw_pin, LOW);
   }
   
   if (_displayfunction & LCD_8BITMODE) {
@@ -282,18 +381,18 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
 }
 
 void LiquidCrystal::pulseEnable(void) {
-  digitalWrite(_enable_pin, LOW);
+  _digitalWrite(_enable_pin, LOW);
   delayMicroseconds(1);    
-  digitalWrite(_enable_pin, HIGH);
+  _digitalWrite(_enable_pin, HIGH);
   delayMicroseconds(1);    // enable pulse must be >450ns
-  digitalWrite(_enable_pin, LOW);
+  _digitalWrite(_enable_pin, LOW);
   delayMicroseconds(100);   // commands need > 37us to settle
 }
 
 void LiquidCrystal::write4bits(uint8_t value) {
   for (int i = 0; i < 4; i++) {
-    pinMode(_data_pins[i], OUTPUT);
-    digitalWrite(_data_pins[i], (value >> i) & 0x01);
+    _pinMode(_data_pins[i], OUTPUT);
+    _digitalWrite(_data_pins[i], (value >> i) & 0x01);
   }
 
   pulseEnable();
@@ -301,8 +400,8 @@ void LiquidCrystal::write4bits(uint8_t value) {
 
 void LiquidCrystal::write8bits(uint8_t value) {
   for (int i = 0; i < 8; i++) {
-    pinMode(_data_pins[i], OUTPUT);
-    digitalWrite(_data_pins[i], (value >> i) & 0x01);
+    _pinMode(_data_pins[i], OUTPUT);
+    _digitalWrite(_data_pins[i], (value >> i) & 0x01);
   }
   
   pulseEnable();

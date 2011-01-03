@@ -9,8 +9,8 @@
   The circuit:
  * 5V to Arduino 5V pin
  * GND to Arduino GND pin
- * CLK to Analog #4
- * DAT to Analog #5
+ * CLK to Analog #5
+ * DAT to Analog #4
 */
 
 // include the library code:

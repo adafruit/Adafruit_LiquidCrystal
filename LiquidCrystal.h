@@ -80,6 +80,9 @@ public:
   void rightToLeft();
   void autoscroll();
   void noAutoscroll();
+  
+  // only if using backpack
+  void setBacklight(uint8_t status); 
 
   void createChar(uint8_t, uint8_t[]);
   void setCursor(uint8_t, uint8_t); 

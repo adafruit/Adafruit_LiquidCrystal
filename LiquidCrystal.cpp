@@ -142,6 +142,8 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     
     _i2c.pinMode(_rs_pin, OUTPUT);
     _i2c.pinMode(_enable_pin, OUTPUT);
+  } else if (_SPIclock != 255) {
+    _SPIbuff = 0x80; // backlight
   }
 
 
@@ -338,8 +340,6 @@ void  LiquidCrystal::_digitalWrite(uint8_t p, uint8_t d) {
     else 
       _SPIbuff &= ~(1 << p);
 
-    _SPIbuff |= 0x80; // backlight
-
     digitalWrite(_SPIlatch, LOW);
     shiftOut(_SPIdata, _SPIclock, MSBFIRST,_SPIbuff);
     digitalWrite(_SPIlatch, HIGH);
@@ -349,6 +349,13 @@ void  LiquidCrystal::_digitalWrite(uint8_t p, uint8_t d) {
   }
 }
 
+// Allows to set the backlight, if the LCD backpack is used
+void LiquidCrystal::setBacklight(uint8_t status) {
+  // check if i2c or SPI
+  if ((_i2cAddr != 255) || (_SPIclock != 255)) {
+    _digitalWrite(7, status); // backlight is on pin 7
+  }
+}
 
 // little wrapper for i/o directions
 void  LiquidCrystal::_pinMode(uint8_t p, uint8_t d) {

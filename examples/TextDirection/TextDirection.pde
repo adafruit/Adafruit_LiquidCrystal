@@ -34,7 +34,8 @@
  */
 
 // include the library code:
-#include <LiquidCrystal.h>
+#include "Wire.h"
+#include "LiquidCrystal.h"
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
@@ -68,7 +69,11 @@ void loop() {
     thisChar = 'a';
   }
   // print the character
+#if ARDUINO >= 100
+  lcd.write(thisChar);
+#else
   lcd.print(thisChar, BYTE);
+#endif
   // wait a second:
   delay(1000);
   // increment the letter:

@@ -33,7 +33,8 @@
  */
 
 // include the library code:
-#include <LiquidCrystal.h>
+#include "Wire.h"
+#include "LiquidCrystal.h"
 
 // these constants won't change.  But you can change the size of
 // your LCD using them:
@@ -58,7 +59,11 @@ void loop() {
         // set the cursor position:
         lcd.setCursor(thisRow,thisCol);
         // print the letter:
+#if ARDUINO >= 100
+        lcd.write(thisLetter);
+#else
         lcd.print(thisLetter, BYTE);
+#endif
         delay(200);
       }
     }

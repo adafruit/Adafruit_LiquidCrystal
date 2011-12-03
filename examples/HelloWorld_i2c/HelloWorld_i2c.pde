@@ -14,8 +14,8 @@
 */
 
 // include the library code:
-#include <Wire.h>
-#include <LiquidCrystal.h>
+#include "Wire.h"
+#include "LiquidCrystal.h"
 
 // Connect via i2c, default address #0 (A0-A2 not jumpered)
 LiquidCrystal lcd(0);

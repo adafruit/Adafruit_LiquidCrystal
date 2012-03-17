@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 #include "Print.h"
-#include "MCP23008.h"
+#include "Adafruit_MCP23008.h"
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -117,7 +117,7 @@ private:
   uint8_t _SPIbuff;
 
   uint8_t _i2cAddr;
-  MCP23008 _i2c;
+  Adafruit_MCP23008 _i2c;
 };
 
 #endif

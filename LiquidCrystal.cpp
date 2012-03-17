@@ -143,7 +143,9 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     _i2c.pinMode(7, OUTPUT); // backlight
     _i2c.digitalWrite(7, HIGH); // backlight
 
-    
+    for (uint8_t i=0; i<4; i++)
+      _pinMode(_data_pins[i], OUTPUT);
+
     _i2c.pinMode(_rs_pin, OUTPUT);
     _i2c.pinMode(_enable_pin, OUTPUT);
   } else if (_SPIclock != 255) {
@@ -408,12 +410,38 @@ void LiquidCrystal::pulseEnable(void) {
 }
 
 void LiquidCrystal::write4bits(uint8_t value) {
-  for (int i = 0; i < 4; i++) {
-    _pinMode(_data_pins[i], OUTPUT);
-    _digitalWrite(_data_pins[i], (value >> i) & 0x01);
-  }
+  if (_i2cAddr != 255) {
+    uint8_t out = 0;
 
-  pulseEnable();
+    out = _i2c.readGPIO();
+
+
+    // speed up for i2c since its sluggish
+    for (int i = 0; i < 4; i++) {
+      out &= ~_BV(_data_pins[i]);
+      out |= ((value >> i) & 0x1) << _data_pins[i];
+    }
+
+    // make sure enable is low
+    out &= ~ _BV(_enable_pin);
+
+    _i2c.writeGPIO(out);
+
+    // pulse enable
+    delayMicroseconds(1);
+    out |= _BV(_enable_pin);
+    _i2c.writeGPIO(out);
+    delayMicroseconds(1);
+    out &= ~_BV(_enable_pin);
+    _i2c.writeGPIO(out);   
+    delayMicroseconds(100);
+  } else {
+    for (int i = 0; i < 4; i++) {
+      _pinMode(_data_pins[i], OUTPUT);
+      _digitalWrite(_data_pins[i], (value >> i) & 0x01);
+    }
+    pulseEnable();
+  }
 }
 
 void LiquidCrystal::write8bits(uint8_t value) {

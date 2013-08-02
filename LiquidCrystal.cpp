@@ -9,6 +9,12 @@
  #include "WProgram.h"
 #endif
 
+// FOR Arduino Due
+#if !defined(_BV)
+#	define _BV(bit) (1 << (bit))
+#endif 
+
+
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear

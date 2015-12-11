@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 #include "Print.h"
-#include "Adafruit_MCP23008.h"
+#include "utility/Adafruit_MCP23008.h"
 
 // commands
 #define LCD_CLEARDISPLAY 0x01

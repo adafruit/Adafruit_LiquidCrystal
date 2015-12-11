@@ -91,9 +91,6 @@ LiquidCrystal::LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch ) {
   _SPIclock = clock;
   _SPIlatch = latch;
 
-  pinMode(_SPIdata, OUTPUT);
-  pinMode(_SPIclock, OUTPUT);
-  pinMode(_SPIlatch, OUTPUT);
   _SPIbuff = 0;
 
   // we can't begin() yet :(
@@ -140,6 +137,9 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     _i2c.pinMode(_rs_pin, OUTPUT);
     _i2c.pinMode(_enable_pin, OUTPUT);
   } else if (_SPIclock != 255) {
+    pinMode(_SPIdata, OUTPUT);
+    pinMode(_SPIclock, OUTPUT);
+    pinMode(_SPIlatch, OUTPUT);
     _SPIbuff = 0x80; // backlight
   } else {
     pinMode(_rs_pin, OUTPUT);

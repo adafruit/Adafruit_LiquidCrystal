@@ -1,9 +1,10 @@
 #ifndef LiquidCrystal_h
 #define LiquidCrystal_h
 
+#include "Arduino.h"
 #include <inttypes.h>
 #include "Print.h"
-#include "Adafruit_MCP23008.h"
+#include "utility/Adafruit_MCP23008.h"
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -93,7 +94,7 @@ public:
 #endif
   void command(uint8_t);
 private:
-  void send(uint8_t, uint8_t);
+  void send(uint8_t value, boolean mode);
   void write4bits(uint8_t);
   void write8bits(uint8_t);
   void pulseEnable();

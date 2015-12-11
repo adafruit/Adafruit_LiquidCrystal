@@ -1,13 +1,8 @@
+#include "Arduino.h"
 #include "LiquidCrystal.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#if ARDUINO >= 100
- #include "Arduino.h"
-#else
- #include "WProgram.h"
-#endif
 
 // FOR Arduino Due
 #if !defined(_BV)
@@ -102,7 +97,6 @@ LiquidCrystal::LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch ) {
   _SPIbuff = 0;
 
   // we can't begin() yet :(
-  begin(16,1);
 }
 
 
@@ -126,19 +120,10 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
   _i2cAddr = 255;
   _SPIclock = _SPIdata = _SPIlatch = 255;
 
-  pinMode(_rs_pin, OUTPUT);
-  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
-  if (_rw_pin != 255) { 
-    pinMode(_rw_pin, OUTPUT);
-  }
-  pinMode(_enable_pin, OUTPUT);
-  
   if (fourbitmode)
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
   else 
     _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
-  
-  begin(16, 1);  
 }
 
 void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
@@ -156,6 +141,14 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     _i2c.pinMode(_enable_pin, OUTPUT);
   } else if (_SPIclock != 255) {
     _SPIbuff = 0x80; // backlight
+  } else {
+    pinMode(_rs_pin, OUTPUT);
+    // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
+    if (_rw_pin != 255) { 
+      pinMode(_rw_pin, OUTPUT);
+    }
+    pinMode(_enable_pin, OUTPUT);
+    
   }
 
 
@@ -390,7 +383,7 @@ void  LiquidCrystal::_pinMode(uint8_t p, uint8_t d) {
 }
 
 // write either command or data, with automatic 4/8-bit selection
-void LiquidCrystal::send(uint8_t value, uint8_t mode) {
+void LiquidCrystal::send(uint8_t value, boolean mode) {
   _digitalWrite(_rs_pin, mode);
 
   // if there is a RW pin indicated, set it low to Write

@@ -24,9 +24,8 @@
 // RTC_DS1307 implementation
 
 void Adafruit_MCP23008::begin(uint8_t addr) {
-  if (addr > 7) {
-    addr = 7;
-  }
+  addr &= 7;
+
   i2caddr = addr;
 
   Wire.begin();

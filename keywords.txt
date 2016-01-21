@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-LiquidCrystal	KEYWORD1
+Adafruit_LiquidCrystal	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

@@ -1,5 +1,5 @@
-#ifndef LiquidCrystal_h
-#define LiquidCrystal_h
+#ifndef Adafruit_LiquidCrystal_h
+#define Adafruit_LiquidCrystal_h
 
 #include "Arduino.h"
 #include <inttypes.h>
@@ -44,21 +44,21 @@
 #define LCD_5x10DOTS 0x04
 #define LCD_5x8DOTS 0x00
 
-class LiquidCrystal : public Print {
+class Adafruit_LiquidCrystal : public Print {
 public:
-  LiquidCrystal(uint8_t rs, uint8_t enable,
+  Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-  LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
+  Adafruit_LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-  LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
+  Adafruit_LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
-  LiquidCrystal(uint8_t rs, uint8_t enable,
+  Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
 
-  LiquidCrystal(uint8_t i2cAddr);
-  LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch);
+  Adafruit_LiquidCrystal(uint8_t i2cAddr);
+  Adafruit_LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch);
 
   void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 	    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,

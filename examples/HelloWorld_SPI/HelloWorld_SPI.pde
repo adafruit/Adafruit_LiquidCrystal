@@ -17,10 +17,10 @@
 
 // include the library code:
 #include "Wire.h"
-#include "LiquidCrystal.h"
+#include "Adafruit_LiquidCrystal.h"
 
 // Connect via SPI. Data pin is #3, Clock is #2 and Latch is #4
-LiquidCrystal lcd(3, 2, 4);
+Adafruit_LiquidCrystal lcd(3, 2, 4);
 
 void setup() {
   // set up the LCD's number of rows and columns: 

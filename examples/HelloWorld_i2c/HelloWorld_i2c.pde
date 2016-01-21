@@ -15,10 +15,10 @@
 
 // include the library code:
 #include "Wire.h"
-#include "LiquidCrystal.h"
+#include "Adafruit_LiquidCrystal.h"
 
 // Connect via i2c, default address #0 (A0-A2 not jumpered)
-LiquidCrystal lcd(0);
+Adafruit_LiquidCrystal lcd(0);
 
 void setup() {
   // set up the LCD's number of rows and columns: 

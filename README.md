@@ -1,4 +1,7 @@
-# LiquidCrystal
+# Adafruit_LiquidCrystal
+
+This library has been renamed Adafruit_LiquidCrystal so as not to conflict with LiquidCrystal. Also, it now works with tiny85's if you have Adafruit AVR board pkg 1.4.3+
+
 <!-- START COMPATIBILITY TABLE -->
 
 ## Compatibility

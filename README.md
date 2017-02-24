@@ -19,7 +19,7 @@ ATSAM21D          |             |      X       |            | I2C works, use SDA
 ATtiny85 @ 16MHz  |             |      X       |            | Use TinyLiquidCrystal libray instead: https://github.com/adafruit/TinyLiquidCrystal
 
 I2C uses SDA &amp; SCL pins 0 &amp; 2
-ATtiny85 @ 8MHz   |             |      X       |            | Use TinyLiquidCrystal libray instead: https://github.com/adafruit/TinyLiquidCrystal
+ATtiny85 @ 8MHz   |             |      X       |            | Use TinyLiquidCrystal library instead: https://github.com/adafruit/TinyLiquidCrystal
 
 I2C uses SDA &amp; SCL pins 0 &amp; 2
 

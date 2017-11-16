@@ -416,10 +416,7 @@ void Adafruit_LiquidCrystal::write4bits(uint8_t value) {
 
 
     // speed up for i2c since its sluggish
-    for (int i = 0; i < 4; i++) {
-      out &= ~_BV(_data_pins[i]);
-      out |= ((value >> i) & 0x1) << _data_pins[i];
-    }
+    out = (out & ~0x78) | ((value & 0x0F) << 3);
 
     // make sure enable is low
     out &= ~ _BV(_enable_pin);

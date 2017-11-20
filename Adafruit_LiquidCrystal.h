@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include <inttypes.h>
 #include "Print.h"
-#include "utility/Adafruit_MCP23008.h"
+#include "Wire.h"
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -100,6 +100,7 @@ private:
   void pulseEnable();
   void _digitalWrite(uint8_t, uint8_t);
   void _pinMode(uint8_t, uint8_t);
+  void i2c_setpins(uint8_t);
 
   uint8_t _rs_pin; // LOW: command.  HIGH: character.
   uint8_t _rw_pin; // LOW: write to LCD.  HIGH: read from LCD.
@@ -118,7 +119,7 @@ private:
   uint8_t _SPIbuff;
 
   uint8_t _i2cAddr;
-  Adafruit_MCP23008 _i2c;
+  uint8_t _i2cGPIO;
 };
 
 #endif

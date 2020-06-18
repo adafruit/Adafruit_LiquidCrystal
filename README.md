@@ -16,11 +16,10 @@ ESP8266           |      X       |             |            | For SPI, ESP8266 h
 Atmega2560 @ 16MHz |      X       |             |            | 
 ATSAM3X8E         |      X       |             |            | 
 ATSAM21D          |             |      X       |            | I2C works, use SDA and SCL pins. For SPI, LCD blinks once on start up.
-ATtiny85 @ 16MHz  |             |      X       |            | Use TinyLiquidCrystal libray instead: https://github.com/adafruit/TinyLiquidCrystal
+ATtiny85 @ 16MHz  |       X      |              |            | 
+ATtiny85 @ 8MHz   |      X       |              |            | 
 
 I2C uses SDA &amp; SCL pins 0 &amp; 2
-ATtiny85 @ 8MHz   |             |      X       |            | Use TinyLiquidCrystal libray instead: https://github.com/adafruit/TinyLiquidCrystal
-
 I2C uses SDA &amp; SCL pins 0 &amp; 2
 
   * ATmega328 @ 16MHz : Arduino UNO, Adafruit Pro Trinket 5V, Adafruit Metro 328, Adafruit Metro Mini

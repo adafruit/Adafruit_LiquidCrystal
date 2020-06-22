@@ -1,13 +1,13 @@
-/*************************************************** 
+/***************************************************
   This is a library for the MCP23008 i2c port expander
 
-  These displays use I2C to communicate, 2 pins are required to  
+  These displays use I2C to communicate, 2 pins are required to
   interface
-  Adafruit invests time and resources providing this open source code, 
-  please support Adafruit and open-source hardware by purchasing 
+  Adafruit invests time and resources providing this open source code,
+  please support Adafruit and open-source hardware by purchasing
   products from Adafruit!
 
-  Written by Limor Fried/Ladyada for Adafruit Industries.  
+  Written by Limor Fried/Ladyada for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
@@ -26,7 +26,7 @@ public:
   uint8_t readGPIO(void);
   void writeGPIO(uint8_t);
 
- private:
+private:
   uint8_t i2caddr;
   uint8_t read8(uint8_t addr);
   void write8(uint8_t addr, uint8_t data);

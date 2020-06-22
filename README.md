@@ -1,4 +1,4 @@
-# Adafruit_LiquidCrystal
+# Adafruit_LiquidCrystal [![Build Status](https://github.com/adafruit/Adafruit_LiquidCrystal/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_LiquidCrystal/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_LiquidCrystal/html/index.html)
 
 This library has been renamed Adafruit_LiquidCrystal so as not to conflict with LiquidCrystal. Also, it now works with tiny85's if you have Adafruit AVR board pkg 1.4.3+
 
@@ -16,11 +16,10 @@ ESP8266           |      X       |             |            | For SPI, ESP8266 h
 Atmega2560 @ 16MHz |      X       |             |            | 
 ATSAM3X8E         |      X       |             |            | 
 ATSAM21D          |             |      X       |            | I2C works, use SDA and SCL pins. For SPI, LCD blinks once on start up.
-ATtiny85 @ 16MHz  |             |      X       |            | Use TinyLiquidCrystal libray instead: https://github.com/adafruit/TinyLiquidCrystal
+ATtiny85 @ 16MHz  |       X      |              |            | 
+ATtiny85 @ 8MHz   |      X       |              |            | 
 
 I2C uses SDA &amp; SCL pins 0 &amp; 2
-ATtiny85 @ 8MHz   |             |      X       |            | Use TinyLiquidCrystal libray instead: https://github.com/adafruit/TinyLiquidCrystal
-
 I2C uses SDA &amp; SCL pins 0 &amp; 2
 
   * ATmega328 @ 16MHz : Arduino UNO, Adafruit Pro Trinket 5V, Adafruit Metro 328, Adafruit Metro Mini

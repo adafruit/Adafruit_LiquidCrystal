@@ -17,7 +17,7 @@
 #include "Adafruit_LiquidCrystal.h"
 
 // Connect via i2c, default address #0 (A0-A2 not jumpered)
-Adafruit_LiquidCrystal lcd();
+Adafruit_LiquidCrystal lcd(0);
 
 void setup() {
   Serial.begin(115200);

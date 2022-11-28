@@ -161,9 +161,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___liquid_crystal.html#a5c29a14da4d5d0f73fa365abfe3abe34">noAutoscroll</a> ()</td></tr>
 <tr class="memdesc:a5c29a14da4d5d0f73fa365abfe3abe34"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level command to 'left justify' text from the cursor. <br /></td></tr>
 <tr class="separator:a5c29a14da4d5d0f73fa365abfe3abe34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23175fd7037d2b1c4ca046305d3418b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___liquid_crystal.html#a23175fd7037d2b1c4ca046305d3418b7">setBacklight</a> (uint8_t status)</td></tr>
-<tr class="memdesc:a23175fd7037d2b1c4ca046305d3418b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level command to set the backlight, only if the LCD backpack is used.  <a href="#a23175fd7037d2b1c4ca046305d3418b7">More...</a><br /></td></tr>
-<tr class="separator:a23175fd7037d2b1c4ca046305d3418b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2205e61c9f4f0e5da8b8465dfa11c734"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___liquid_crystal.html#a2205e61c9f4f0e5da8b8465dfa11c734">setBacklight</a> (uint8_t value)</td></tr>
+<tr class="memdesc:a2205e61c9f4f0e5da8b8465dfa11c734"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level command to set the backlight, only if the LCD backpack is used.  <a href="#a2205e61c9f4f0e5da8b8465dfa11c734">More...</a><br /></td></tr>
+<tr class="separator:a2205e61c9f4f0e5da8b8465dfa11c734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ca6a5eaf1b8af53e5e0f7fa45bbf030"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___liquid_crystal.html#a1ca6a5eaf1b8af53e5e0f7fa45bbf030">createChar</a> (uint8_t, uint8_t[])</td></tr>
 <tr class="memdesc:a1ca6a5eaf1b8af53e5e0f7fa45bbf030"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level command that creates custom character in CGRAM.  <a href="#a1ca6a5eaf1b8af53e5e0f7fa45bbf030">More...</a><br /></td></tr>
 <tr class="separator:a1ca6a5eaf1b8af53e5e0f7fa45bbf030"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -744,8 +744,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a23175fd7037d2b1c4ca046305d3418b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23175fd7037d2b1c4ca046305d3418b7">&#9670;&nbsp;</a></span>setBacklight()</h2>
+<a id="a2205e61c9f4f0e5da8b8465dfa11c734"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2205e61c9f4f0e5da8b8465dfa11c734">&#9670;&nbsp;</a></span>setBacklight()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -754,7 +754,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">void Adafruit_LiquidCrystal::setBacklight </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>status</em></td><td>)</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -763,7 +763,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>High-level command to set the backlight, only if the LCD backpack is used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">status</td><td>Status to set the backlight </td></tr>
+    <tr><td class="paramname">value</td><td>Set the backlight off/on, 0 = off, &gt;0 = on. </td></tr>
   </table>
   </dd>
 </dl>

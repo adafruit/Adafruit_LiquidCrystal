@@ -219,9 +219,9 @@ public:
   /*!
    * @brief High-level command to set the backlight, only if the LCD backpack is
    * used
-   * @param status Status to set the backlight
+   * @param value Set the backlight off/on, 0 = off, >0 = on.
    */
-  void setBacklight(uint8_t status);
+  void setBacklight(uint8_t value);
 
   /*!
    * @brief High-level command that creates custom character in CGRAM

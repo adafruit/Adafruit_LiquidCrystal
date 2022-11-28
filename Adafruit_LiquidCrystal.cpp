@@ -372,10 +372,14 @@ void Adafruit_LiquidCrystal::_digitalWrite(uint8_t p, uint8_t d) {
 }
 
 // Allows to set the backlight, if the LCD backpack is used
-void Adafruit_LiquidCrystal::setBacklight(uint8_t status) {
+void Adafruit_LiquidCrystal::setBacklight(uint8_t value) {
   // check if i2c or SPI
   if ((_i2cAddr != 255) || (_SPIclock != 255)) {
-    _digitalWrite(7, status); // backlight is on pin 7
+    // backlight is on pin 7
+    if (value)
+      _digitalWrite(7, HIGH);
+    else
+      _digitalWrite(7, LOW);
   }
 }
 

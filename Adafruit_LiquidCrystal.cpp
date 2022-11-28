@@ -17,10 +17,6 @@
  * BSD license, all text above must be included in any redistribution
  */
 #include "Adafruit_LiquidCrystal.h"
-#include "Arduino.h"
-#include <inttypes.h>
-#include <stdio.h>
-#include <string.h>
 
 // FOR Arduino Due
 #if !defined(_BV)
@@ -73,8 +69,9 @@ Adafruit_LiquidCrystal::Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
   init(1, rs, 255, enable, d0, d1, d2, d3, 0, 0, 0, 0);
 }
 
-Adafruit_LiquidCrystal::Adafruit_LiquidCrystal(uint8_t i2caddr) {
-  _i2cAddr = i2caddr;
+Adafruit_LiquidCrystal::Adafruit_LiquidCrystal(uint8_t i2caddr, TwoWire *wire) {
+  _i2cAddr = i2caddr <= 0x07 ? 0x20 | i2caddr : i2caddr;
+  _wire = wire;
 
   _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
 
@@ -140,20 +137,22 @@ void Adafruit_LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw,
     _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
 }
 
-void Adafruit_LiquidCrystal::begin(uint8_t cols, uint8_t lines,
+bool Adafruit_LiquidCrystal::begin(uint8_t cols, uint8_t lines,
                                    uint8_t dotsize) {
+  (void)cols; // Workaround to avoid compiler warning.
   // check if i2c
   if (_i2cAddr != 255) {
-    _i2c.begin(_i2cAddr);
+    if (!_mcp.begin_I2C(_i2cAddr, _wire))
+      return false;
 
-    _i2c.pinMode(7, OUTPUT);    // backlight
-    _i2c.digitalWrite(7, HIGH); // backlight
+    _mcp.pinMode(7, OUTPUT);    // backlight
+    _mcp.digitalWrite(7, HIGH); // backlight
 
     for (uint8_t i = 0; i < 4; i++)
       _pinMode(_data_pins[i], OUTPUT);
 
-    _i2c.pinMode(_rs_pin, OUTPUT);
-    _i2c.pinMode(_enable_pin, OUTPUT);
+    _mcp.pinMode(_rs_pin, OUTPUT);
+    _mcp.pinMode(_enable_pin, OUTPUT);
   } else if (_SPIclock != 255) {
     pinMode(_SPIdata, OUTPUT);
     pinMode(_SPIclock, OUTPUT);
@@ -241,6 +240,8 @@ void Adafruit_LiquidCrystal::begin(uint8_t cols, uint8_t lines,
   _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
   // set the entry mode
   command(LCD_ENTRYMODESET | _displaymode);
+
+  return true;
 }
 
 /********** high level commands, for the user! */
@@ -354,7 +355,7 @@ inline void Adafruit_LiquidCrystal::write(uint8_t value) { send(value, HIGH); }
 void Adafruit_LiquidCrystal::_digitalWrite(uint8_t p, uint8_t d) {
   if (_i2cAddr != 255) {
     // an i2c command
-    _i2c.digitalWrite(p, d);
+    _mcp.digitalWrite(p, d);
   } else if (_SPIclock != 255) {
     if (d == HIGH)
       _SPIbuff |= (1 << p);
@@ -382,7 +383,7 @@ void Adafruit_LiquidCrystal::setBacklight(uint8_t status) {
 void Adafruit_LiquidCrystal::_pinMode(uint8_t p, uint8_t d) {
   if (_i2cAddr != 255) {
     // an i2c command
-    _i2c.pinMode(p, d);
+    _mcp.pinMode(p, d);
   } else if (_SPIclock != 255) {
     // nothing!
   } else {
@@ -421,7 +422,7 @@ void Adafruit_LiquidCrystal::write4bits(uint8_t value) {
   if (_i2cAddr != 255) {
     uint8_t out = 0;
 
-    out = _i2c.readGPIO();
+    out = _mcp.readGPIO();
 
     // speed up for i2c since its sluggish
     for (int i = 0; i < 4; i++) {
@@ -432,15 +433,15 @@ void Adafruit_LiquidCrystal::write4bits(uint8_t value) {
     // make sure enable is low
     out &= ~_BV(_enable_pin);
 
-    _i2c.writeGPIO(out);
+    _mcp.writeGPIO(out);
 
     // pulse enable
     delayMicroseconds(1);
     out |= _BV(_enable_pin);
-    _i2c.writeGPIO(out);
+    _mcp.writeGPIO(out);
     delayMicroseconds(1);
     out &= ~_BV(_enable_pin);
-    _i2c.writeGPIO(out);
+    _mcp.writeGPIO(out);
     delayMicroseconds(100);
   } else {
     for (int i = 0; i < 4; i++) {

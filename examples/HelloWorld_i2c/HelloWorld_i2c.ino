@@ -1,11 +1,11 @@
 /*
  Demonstration sketch for Adafruit i2c/SPI LCD backpack
  using MCP23008 I2C expander
- ( http://www.ladyada.net/products/i2cspilcdbackpack/index.html )
+ ( https://learn.adafruit.com/i2c-spi-lcd-backpack )
 
  This sketch prints "Hello World!" to the LCD
  and shows the time.
- 
+
   The circuit:
  * 5V to Arduino 5V pin
  * GND to Arduino GND pin
@@ -14,15 +14,23 @@
 */
 
 // include the library code:
-#include "Wire.h"
 #include "Adafruit_LiquidCrystal.h"
 
 // Connect via i2c, default address #0 (A0-A2 not jumpered)
 Adafruit_LiquidCrystal lcd(0);
 
 void setup() {
-  // set up the LCD's number of rows and columns: 
-  lcd.begin(16, 2);
+  Serial.begin(115200);
+  // while(!Serial);
+  Serial.println("LCD Character Backpack I2C Test.");
+
+  // set up the LCD's number of rows and columns:
+  if (!lcd.begin(16, 2)) {
+    Serial.println("Could not init backpack. Check wiring.");
+    while(1);
+  }
+  Serial.println("Backpack init'd.");
+
   // Print a message to the LCD.
   lcd.print("hello, world!");
 }

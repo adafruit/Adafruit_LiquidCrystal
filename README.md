@@ -7,5 +7,5 @@ which is found on most text-based LCDs. Also includes support for
 
 ## Compatibility
 
-Compatabile with any board supported by the [Adafruit Bus IO Library](https://github.com/adafruit/Adafruit_BusIO).
+Compatible with any board supported by the [Adafruit Bus IO Library](https://github.com/adafruit/Adafruit_BusIO).
 
